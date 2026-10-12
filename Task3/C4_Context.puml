@@ -1,0 +1,24 @@
+@startuml C4_Context_SmartHome
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Context.puml
+
+title Диаграмма контекста - Умный дом (PropDevelopment)
+
+Person(Owner, "Собственник", "Житель, пользуется умным домом через мобильное приложение: регистрирует биометрию, управляет доступом")
+Person(Guest, "Гость", "Приходит к собственнику, звонит в домофон")
+Person(HousingAdmin, "Администратор УК", "Управляет доступами и устройствами в пределах своей управляющей компании")
+
+System(PropDevelopment, "PropDevelopment", "Платформа покупки и обслуживания недвижимости. Предоставляет собственникам сервисы ЖКУ и умного дома через мобильное приложение")
+
+System_Ext(Smarthome, "Партнёрская платформа «Умный дом»", "Внешний партнёр. Интеллектуальный домофон (распознавание лиц) и шлагбаум (распознавание номеров)")
+System_Ext(Payment, "Платёжная система", "Провайдер онлайн-платежей (оплата ЖКУ)")
+System_Ext(HousingUtilitiesProvider, "Поставщик ресурсов ЖКХ", "Управляющие компании, услуги ЖКУ")
+
+Rel(Owner, PropDevelopment, "Регистрирует биометрию, управляет доступом, оплачивает ЖКУ", "Мобильное приложение / HTTPS")
+Rel(Guest, Smarthome, "Звонит в домофон")
+Rel(HousingAdmin, PropDevelopment, "Настраивает доступы и устройства своей УК", "HTTPS")
+
+Rel(PropDevelopment, Smarthome, "Передаёт биометрические векторы, шлёт подписанные команды открытия; получает распознанные лица/номера, видеопоток", "API, TLS")
+Rel(PropDevelopment, Payment, "Проводит платежи ЖКУ", "API, TLS")
+Rel(PropDevelopment, HousingUtilitiesProvider, "Обменивается данными по услугам ЖКУ", "API, TLS")
+
+@enduml
